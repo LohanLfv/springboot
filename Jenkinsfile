@@ -1,16 +1,17 @@
 pipeline {
     agent any
     tools {
-       maven 'localMaven'
-       jdk "Java17"
+        maven 'localMaven'    
+        jdk 'Java17'          
     }
 
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    // Checkout your source code from version control
-                    git branch: 'main', credentialsId: 'jenkins', url: 'https://github.com/LohanLfv/springboot.git';
+                    git branch: 'main',
+                        credentialsId: 'github-token',
+                        url: 'https://github.com/LohanLfv/springboot.git'
                 }
             }
         }
@@ -18,38 +19,33 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build the Maven project
                     sh "mvn clean package"
                 }
             }
         }
-    stage('Deploy to Nexus') {
+
+        stage('Deploy to Nexus') {
             steps {
                 script {
-                    // Deploy the WAR file to Nexus Repository
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        serverId: '192.168.244.147:8081',
-                        groupId: 'efrei',
-                        version: '0.0.1',
-                        repository: 'AppSpring',
-                        credentialsId: 'nexusCredential',
                         nexusUrl: '192.168.244.147:8081',
+                        groupId: 'efrei',
+                        version: '0.0.1-SNAPSHOT',
+                        repository: 'AppSpring',         
+                        credentialsId: 'nexusCredential',
                         artifacts: [
-                            [artifactId: 'efrei-0.0.1-SNAPSHOT',
-                             classifier: '',
-                             file: 'target/efrei-0.0.1-SNAPSHOT.jar',
-                             type: 'jar']
+                            [
+                                artifactId: 'demo',        
+                                classifier: '',
+                                file: 'target/demo-0.0.1-SNAPSHOT.jar',
+                                type: 'jar'
+                            ]
                         ]
                     )
                 }
             }
         }
-
     }
-
 }
-
-
-
