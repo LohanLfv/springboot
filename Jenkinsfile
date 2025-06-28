@@ -14,5 +14,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Build the Maven project
+                    sh "mvn clean package"
+                }
+            }
+        }
     }
+
 }
+
