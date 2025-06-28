@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     // Checkout your source code from version control
-                    git branch: 'master', credentialsId: 'jenkins', url: 'https://gitlab.com/groupepoc/efrei.git';
+                    git branch: 'main', credentialsId: 'jenkins', url: 'https://github.com/LohanLfv/springboot.git';
                 }
             }
         }
