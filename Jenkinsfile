@@ -14,39 +14,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Build') {
-            steps {
-                script {
-                    // Build the Maven project
-                    sh "mvn clean package"
-                }
-            }
-        }
-    stage('Deploy to Nexus') {
-            steps {
-                script {
-                    // Deploy the WAR file to Nexus Repository
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        serverId: '34.228.158.195:8081',
-                        groupId: 'efrei',
-                        version: '0.0.1',
-                        repository: 'AppSpring',
-                        credentialsId: 'nexusCredential',
-                        nexusUrl: '34.228.158.195:8081',
-                        artifacts: [
-                            [artifactId: 'efrei-0.0.1-SNAPSHOT',
-                             classifier: '',
-                             file: 'target/efrei-0.0.1-SNAPSHOT.jar',
-                             type: 'jar']
-                        ]
-                    )
-                }
-            }
-        }
-
     }
-
 }
